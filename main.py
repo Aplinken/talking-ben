@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import os
 
-os.chdir("E:\\Talking Ben Bot")
+#os.chdir("E:\\Talking Ben Bot")
 ownerid = 742661420683886597
 
 # Client created
