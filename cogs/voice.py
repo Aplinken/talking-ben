@@ -21,7 +21,7 @@ class Voice(commands.Cog):
         else:
             reply = random.choice(vc_reply_list)
             print(reply)                                              
-            voice.play(discord.FFmpegPCMAudio(executable="E:/ffmpeg-n4.4-latest-win64-gpl-4.4/bin/ffmpeg.exe", source=os.listdir(f"./audio/{reply}")))
+            voice.play(discord.FFmpegPCMAudio(executable="E:/ffmpeg-n4.4-latest-win64-gpl-4.4/bin/ffmpeg.exe", source=url_for('cogs',filename=f'audio/{reply}'))
          
 def setup(client):
 	client.add_cog(Voice(client))
