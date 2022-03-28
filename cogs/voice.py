@@ -21,7 +21,7 @@ class Voice(commands.Cog):
         else:
             reply = random.choice(vc_reply_list)
             print(reply)                                              
-            voice.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(f"./audio/{reply}")))
+            voice.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(f"./cogs/audio/{reply}")))
          
 def setup(client):
 	client.add_cog(Voice(client))
