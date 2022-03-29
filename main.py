@@ -48,6 +48,6 @@ for filename in os.listdir('./cogs'):
 
 #with open('token.txt') as f:
 	#token = f.read()
-token = process.env.API_KEY;
+token = os.environ.get('TOKEN')
 	
 client.run(f'{token}')
