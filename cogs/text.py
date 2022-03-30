@@ -58,7 +58,7 @@ class Text(commands.Cog):
         ''')
         fm_result = str(result)
 
-        await ctx.send(f"Amount Of Questions Answered: {fm_result[1:-2]}")
+        await ctx.send(f"Amount Of Questions Answered: {fm_result[18:-2]}")
         await db.close()
         
 

@@ -26,7 +26,7 @@ class Voice(commands.Cog):
             await voice.play(
 		    PCMVolumeTransformer(FFmpegPCMAudio(f"./cogs/audio/{reply}"))
 	    	)
-            update_ans(guild=ctx.guild.id)
+            await update_ans(guild=ctx.guild.id)
          
 def setup(client):
 	client.add_cog(Voice(client))
