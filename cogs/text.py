@@ -12,7 +12,7 @@ async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE tha
 
     db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
     result = await db.fetch(f'''
-        SELECT * FROM main WHERE guild_id = {guild}
+        SELECT * FROM main WHERE guild_id = {guild} LIMIT 1
     ''')
     if result is None:
         await db.execute(f'''
@@ -26,7 +26,7 @@ async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE tha
     #player based
 
     result_2 = await db.fetchval(f'''
-        SELECT * FROM player WHERE id = {player_id}
+        SELECT * FROM player WHERE id = {player_id} LIMIT 1
     ''')
     if result_2 is None:
         await db.execute(f'''
