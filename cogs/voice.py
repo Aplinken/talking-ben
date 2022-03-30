@@ -23,7 +23,7 @@ class Voice(commands.Cog):
                 await channel.connect()
         else:
             reply = random.choice(vc_reply_list)                                        
-            await voice.play(
+            voice.play(
 		    PCMVolumeTransformer(FFmpegPCMAudio(f"./cogs/audio/{reply}"))
 	    	)
             await update_ans(guild=ctx.guild.id)
