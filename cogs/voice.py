@@ -13,7 +13,7 @@ class Voice(commands.Cog):
 
     @commands.command()
     async def vc(self,ctx):
-        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild) 
+        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id) 
 
         if voice is None: #JOIN VC   
             channel = ctx.author.voice.channel
@@ -31,7 +31,7 @@ class Voice(commands.Cog):
         
     @commands.command()
     async def leave(self,ctx):
-        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
+        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id)
 
         if voice is None:
             await ctx.send("I'm not connected to any voice channels.")
