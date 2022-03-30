@@ -9,7 +9,7 @@ class Help(commands.Cog):
     async def help(self,ctx):
         embed = discord.Embed(title='Help',color = discord.Colour.blue())
 
-        embed.add_field(name='Text',value='`ben`,`ans`,`source`,`ping`')
+        embed.add_field(name='Text',value='`ben`,`ans`,`source`,`ping`,`leaderboard`')
         embed.add_field(name='Voice',value='`vc`,`leave`')
         embed.set_footer(text='aplinken.03')
 
@@ -49,6 +49,12 @@ class Help(commands.Cog):
     async def leave(self,ctx):
         em = discord.Embed(title="Leave",description="ben leaves any vc he is connected to",color=discord.Color.green())
         em.add_field(name="**Syntax**", value="~leave")
+        await ctx.send(embed=em)
+
+    @help.command(aliases=['lb'])
+    async def leaderboard(self,ctx):
+        em = discord.Embed(title="Leaderboard",description="ben shows global leaderboard",color=discord.Color.green())
+        em.add_field(name="**Syntax**", value="~leaderboard/~lb")
         await ctx.send(embed=em)
 
 

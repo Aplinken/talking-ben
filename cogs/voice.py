@@ -31,14 +31,15 @@ class Voice(commands.Cog):
         
     @commands.command()
     async def leave(self,ctx):
-        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id)
+        try:
+            voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id)
 
-        if voice is None:
+            await voice.disconnect()
+            await ctx.send("Left the voice channel")            
+        except:
             await ctx.send("I'm not connected to any voice channels.")
 
-        else:
-            await voice.disconnect()
-            await ctx.send("Left the voice channel")
+
          
 def setup(client):
 	client.add_cog(Voice(client))

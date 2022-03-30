@@ -8,6 +8,7 @@ reply_list = ['Yes.','No.','Hohoho','Ugh'] #List of possible replies
 
 async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE that matches guild_id 
 
+
     #guild based
 
     db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
@@ -63,20 +64,25 @@ class Text(commands.Cog):
     async def ans(self,ctx):
         guild = ctx.guild.id
         player_id = ctx.author.id
+
+        em = discord.Embed(title="Answer Stats")
+
         db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
         result = await db.fetch(f'''
             SELECT answered FROM main WHERE guild_id = {guild} LIMIT 1
         ''')
         fm_result = str(result)
 
-        await ctx.send(f"Amount Of Questions Answered In This Server: {fm_result[18:-2]}")
+        em.add_field(name="Server",value=f"Answered: {fm_result[18:-2]}")
 
         result_2 = await db.fetch(f'''
             SELECT answered FROM player WHERE id = {player_id} LIMIT 1
         ''')
         fm_result_2 = str(result_2)
 
-        await ctx.send(f"\nAmount Of Questions From You That I Answered: {fm_result_2[18:-2]}")
+        em.add_field(name="You",value=f"Answered: {fm_result_2[18:-2]}")
+
+        await ctx.send(embed=em)
         await db.close()
 
     @commands.command(aliases=['lb'])
@@ -88,15 +94,12 @@ class Text(commands.Cog):
             SELECT answered, name FROM player ORDER BY answered DESC, name DESC LIMIT 10
         ''')
         
-        em = discord.Embed(title='Leaderboard')
+        em = discord.Embed(title='Leaderboard',color=discord.Color.green())
         for i, pos in enumerate(result, start=1):
             ans, name = pos
-            print(f"{i}. {name}, Answered: {ans}")
             em.add_field(name=f"{i}. {name}",value=f"Answered: {ans}", inline=False)
 
         await ctx.send(embed=em)
-
-
         
 
 
