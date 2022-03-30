@@ -16,12 +16,12 @@ class Voice(commands.Cog):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id) 
 
         if voice is None: #JOIN VC   
-            channel = ctx.author.voice.channel
-            if channel is None:
-                await ctx.send("You are not connected to any voice channels!")
-            else:
+            try:
+                channel = ctx.author.voice.channel
                 await channel.connect()
                 await ctx.send("Joined the voice channel")
+            except:
+                await ctx.send("You are not connected to any voice channels!")                
         else:
             reply = random.choice(vc_reply_list)                                        
             voice.play(
@@ -31,13 +31,13 @@ class Voice(commands.Cog):
         
     @commands.command()
     async def leave(self,ctx):
-        try:
             voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild.id)
 
-            await voice.disconnect()
-            await ctx.send("Left the voice channel")            
-        except:
-            await ctx.send("I'm not connected to any voice channels.")
+            if voice is None:           
+                await ctx.send("I'm not connected to any voice channels.")
+            else:
+                await voice.disconnect()
+                await ctx.send("Left the voice channel") 
 
 
          
