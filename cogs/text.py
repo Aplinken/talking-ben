@@ -25,7 +25,7 @@ async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE tha
 
     #player based
 
-    result_2 = await db.fetch(f'''
+    result_2 = await db.fetchval(f'''
         SELECT * FROM player WHERE id = {player_id}
     ''')
     if result_2 is None:
