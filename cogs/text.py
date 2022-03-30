@@ -1,3 +1,4 @@
+from turtle import title
 import asyncpg
 import discord
 from discord.ext import commands
@@ -88,9 +89,14 @@ class Text(commands.Cog):
             SELECT answered, name FROM player ORDER BY answered DESC, name DESC LIMIT 10
         ''')
         
+        em = discord.Embed(title='Leaderboard')
         for i, pos in enumerate(result, start=1):
             ans, name = pos
             print(f"{i}. {name}, Answered: {ans}")
+            em.add_field(name=f"{i}. {name}",value=f"Answered: {ans}")
+
+        await ctx.send(embed=em)
+
 
         
 

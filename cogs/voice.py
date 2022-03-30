@@ -37,7 +37,7 @@ class Voice(commands.Cog):
             await ctx.send("I'm not connected to any voice channels.")
 
         else:
-            voice.disconnect()
+            await voice.disconnect()
             await ctx.send("Left the voice channel")
          
 def setup(client):
