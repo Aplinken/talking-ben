@@ -1,4 +1,3 @@
-import asyncio
 import asyncpg
 import discord
 from discord.ext import commands
@@ -22,22 +21,17 @@ async def update_ans(guild):
         ''')
     await db.close()    
 
-loop = asyncio.get_event_loop()
-
-
-
 class Text(commands.Cog):
     def __init__(self,client):
         self.client = client
 
     @commands.command()
-    async def ben(self,ctx,q=None):
-        guild = ctx.guild.id
-        if q is None:
-            await ctx.send('Ben') #Bruh Ben
-        else:
-            loop.run_until_complete(update_ans())
-            await ctx.send(random.choice(reply_list)) #Random Reply
+    async def ben(self, ctx, q = None):
+        if not q:
+            return await ctx.send('Ben') #Bruh Ben
+
+        await update_ans(ctx.guild.id)
+        await ctx.send(random.choice(reply_list)) #Random Reply
  
     @commands.command()
     async def help(self,ctx):
