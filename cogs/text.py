@@ -25,10 +25,10 @@ async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE tha
 
     #player based
 
-    result = await db.fetch(f'''
+    result_2 = await db.fetch(f'''
         SELECT * FROM player WHERE id = {player_id}
     ''')
-    if result is None:
+    if result_2 is None:
         await db.execute(f'''
             INSERT INTO player (id, answered, name) VALUES ({player_id},1,{player_name})
         ''')
