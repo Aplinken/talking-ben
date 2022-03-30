@@ -6,7 +6,10 @@ import os
 
 reply_list = ['Yes.','No.','Hohoho','Ugh'] #List of possible replies
 
-async def update_ans(guild):
+async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE that matches guild_id 
+
+    #guild based
+
     db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
     result = await db.fetch(f'''
         SELECT * FROM main WHERE guild_id = {guild}
@@ -19,6 +22,21 @@ async def update_ans(guild):
         await db.execute(f'''
             UPDATE main SET answered = answered + 1 WHERE guild_id = {guild} 
         ''')
+
+    #player based
+
+    result = await db.fetch(f'''
+        SELECT * FROM player WHERE id = {player_id}
+    ''')
+    if result is None:
+        await db.execute(f'''
+            INSERT INTO player (id, answered, name) VALUES ({player_id},1,{player_name})
+        ''')
+    else:     
+        await db.execute(f'''
+            UPDATE main SET answered = answered + 1 WHERE id = {player_id} 
+        ''')
+
     await db.close()    
 
 class Text(commands.Cog):
@@ -30,16 +48,8 @@ class Text(commands.Cog):
         if not q:
             return await ctx.send('Ben') #Bruh Ben
 
-        await update_ans(ctx.guild.id)
+        await update_ans(ctx.guild.id,ctx.author.id,ctx.author.name)
         await ctx.send(random.choice(reply_list)) #Random Reply
- 
-    @commands.command()
-    async def help(self,ctx):
-        embed = discord.Embed(title='Help',color = discord.Colour.blue())
-        embed.add_field(name='Ben',value='Use this command to ask ben questions\n*Syntax: ~ben <question>*',inline=False)
-        embed.add_field(name='VC',value='Use this command to ask ben questions in vc(also used for joining vc)\n*Syntax: ~vc*',inline=False)
-        embed.set_footer(text='aplinken.02')
-        await ctx.send(embed=embed)
 
     @commands.command()
     async def source(self,ctx):
@@ -52,14 +62,36 @@ class Text(commands.Cog):
     @commands.command()
     async def ans(self,ctx):
         guild = ctx.guild.id
+        player_id = ctx.author.id
         db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
         result = await db.fetch(f'''
             SELECT answered FROM main WHERE guild_id = {guild} LIMIT 1
         ''')
         fm_result = str(result)
 
-        await ctx.send(f"Amount Of Questions Answered: {fm_result[18:-2]}")
+        await ctx.send(f"Amount Of Questions Answered In This Server: {fm_result[18:-2]}")
+
+        result_2 = await db.fetch(f'''
+            SELECT answered FROM player WHERE id = {player_id} LIMIT 1
+        ''')
+        fm_result_2 = str(result_2)
+
+        await ctx.send(f"\nAmount Of Questions From You That I Answered: {fm_result_2[18:-2]}")
         await db.close()
+
+    @commands.command(aliases=['lb'])
+    async def leaderboard(self,ctx):
+        player_id = ctx.author.id
+
+        db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
+        result = await db.fetch(f'''
+            SELECT answered, name FROM player ORDER BY answered DESC, name DESC LIMIT 10
+        ''')
+        
+        for i, pos in enumerate(result, start=1):
+            ans, name = pos
+            print(f"{i}. {name}, Answered: {ans}")
+
         
 
 

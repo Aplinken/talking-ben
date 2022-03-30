@@ -21,12 +21,24 @@ class Voice(commands.Cog):
                 await ctx.send("You are not connected to any voice channels!")
             else:
                 await channel.connect()
+                await ctx.send("Joined the voice channel")
         else:
             reply = random.choice(vc_reply_list)                                        
             voice.play(
 		    PCMVolumeTransformer(FFmpegPCMAudio(f"./cogs/audio/{reply}"))
 	    	)
-            await update_ans(guild=ctx.guild.id)
+            await update_ans(guild=ctx.guild.id,player_id=ctx.author.id,player_name=ctx.author.name)
+        
+    @commands.command()
+    async def leave(self,ctx):
+        voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
+
+        if voice is None:
+            await ctx.send("I'm not connected to any voice channels.")
+
+        else:
+            voice.disconnect()
+            await ctx.send("Left the voice channel")
          
 def setup(client):
 	client.add_cog(Voice(client))
