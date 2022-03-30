@@ -92,7 +92,7 @@ class Text(commands.Cog):
         for i, pos in enumerate(result, start=1):
             ans, name = pos
             print(f"{i}. {name}, Answered: {ans}")
-            em.add_field(name=f"{i}. {name}",value=f"Answered: {ans}")
+            em.add_field(name=f"{i}. {name}",value=f"Answered: {ans}", inline=False)
 
         await ctx.send(embed=em)
 
