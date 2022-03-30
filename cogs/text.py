@@ -1,4 +1,3 @@
-from turtle import title
 import asyncpg
 import discord
 from discord.ext import commands
