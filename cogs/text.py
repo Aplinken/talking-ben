@@ -1,4 +1,5 @@
-import psycopg2
+import asyncio
+import asyncpg
 import discord
 from discord.ext import commands
 import random
@@ -6,23 +7,23 @@ import os
 
 reply_list = ['Yes.','No.','Hohoho','Ugh'] #List of possible replies
 
-def update_ans(guild):
-    db = psycopg2.connect(f"{os.environ.get('DATABASE')}")
-    cursor = db.cursor()
-    cursor.execute(f'''
+async def update_ans(guild):
+    db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
+    result = await db.fetch(f'''
         SELECT * FROM main WHERE guild_id = {guild}
     ''')
-    result = cursor.fetchone()
     if result is None:
-        cursor.execute(f'''
+        await db.execute(f'''
             INSERT INTO main (guild_id, answered) VALUES ({guild},1)
         ''')
     else:     
-        cursor.execute(f'''
+        await db.execute(f'''
             UPDATE main SET answered = answered + 1 WHERE guild_id = {guild} 
         ''')
-    db.commit()
-    cursor.close()    
+    await db.close()    
+
+loop = asyncio.get_event_loop()
+
 
 
 class Text(commands.Cog):
@@ -35,7 +36,7 @@ class Text(commands.Cog):
         if q is None:
             await ctx.send('Ben') #Bruh Ben
         else:
-            update_ans(guild=guild)
+            loop.run_until_complete(update_ans())
             await ctx.send(random.choice(reply_list)) #Random Reply
  
     @commands.command()
@@ -57,15 +58,14 @@ class Text(commands.Cog):
     @commands.command()
     async def ans(self,ctx):
         guild = ctx.guild.id
-        db = psycopg2.connect(f"{os.environ.get('DATABASE')}")
-        cursor = db.cursor()
-        cursor.execute(f'''
-            SELECT answered FROM main WHERE guild_id = {guild}
+        db = await asyncpg.connect(f"{os.environ.get('DATABASE')}")
+        result = await db.fetch(f'''
+            SELECT answered FROM main WHERE guild_id = {guild} LIMIT 1
         ''')
-        result = cursor.fetchone()
         fm_result = str(result)
 
         await ctx.send(f"Amount Of Questions Answered: {fm_result[1:-2]}")
+        await db.close()
         
 
 

@@ -1,5 +1,6 @@
 import random
-import psycopg2
+import asyncio
+import asyncpg
 import os
 from xmlrpc import client
 import discord
@@ -24,9 +25,8 @@ class Voice(commands.Cog):
             else:
                 await channel.connect()
         else:
-            reply = random.choice(vc_reply_list)
-            print(reply)                                              
-            voice.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(f"./cogs/audio/{reply}")))
+            reply = random.choice(vc_reply_list)                                        
+            await voice.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(f"./cogs/audio/{reply}")))
             update_ans(guild=ctx.guild.id)
          
 def setup(client):
