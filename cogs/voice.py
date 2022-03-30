@@ -1,12 +1,9 @@
 import random
-import asyncio
-import asyncpg
-import os
-from xmlrpc import client
+from .text import update_ans
+
 import discord
 from discord.ext import commands
-from discord import FFmpegPCMAudio
-from .text import update_ans
+from discord import PCMVolumeTransformer, FFmpegPCMAudio
 
 vc_reply_list = ['Laugh.wav','Yes.wav','No.wav','Ugh.wav']
 
@@ -26,7 +23,9 @@ class Voice(commands.Cog):
                 await channel.connect()
         else:
             reply = random.choice(vc_reply_list)                                        
-            await voice.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(f"./cogs/audio/{reply}")))
+            await voice.play(
+		    PCMVolumeTransformer(FFmpegPCMAudio(f"./cogs/audio/{reply}"))
+	    	)
             update_ans(guild=ctx.guild.id)
          
 def setup(client):
