@@ -5,7 +5,7 @@ import os
 # Client created
 intents = discord.Intents.default()
 intents.members = True
-client = commands.Bot(command_prefix=commands.when_mentioned_or('~'), case_insensitive=True)
+client = commands.Bot(command_prefix= commands.when_mentioned_or('~'), case_insensitive= True, intents= intents)
 client.remove_command("help")
 
 # Starting Defaults
