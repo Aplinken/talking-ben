@@ -34,7 +34,7 @@ async def update_ans(guild,player_id,player_name): #add +1 to answered VALUE tha
         ''')
     else:     
         await db.execute(f'''
-            UPDATE main SET answered = answered + 1 WHERE id = {player_id} 
+            UPDATE player SET answered = answered + 1 WHERE id = {player_id} 
         ''')
 
     await db.close()    
