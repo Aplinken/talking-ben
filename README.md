@@ -1,1 +1,3 @@
 ISHOWSPEED INSPIRED TALKING BEN BOT
+
+Invite This Bot: https://top.gg/bot/957340994335039548 :)
