@@ -12,7 +12,8 @@ client.remove_command("help")
 
 @client.event
 async def on_ready():
-	await client.change_presence(activity=discord.Game(name="My Talking Angela"))
+	await client.change_presence(activity=discord.Game(name="on " + str(len(client.guilds)) + " Servers.", type=0))
+
 
 @commands.is_owner()
 @client.command()
